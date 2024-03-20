@@ -1,0 +1,17 @@
+{
+  "installationFolder": "E:\\flutter\\MyApplication2\\OpenCv\\build\\intermediates\\prefab_package\\debug\\prefab",
+  "gradlePath": ":OpenCv",
+  "packageInfo": {
+    "packageName": "OpenCv",
+    "packageSchemaVersion": 2,
+    "packageDependencies": [],
+    "modules": [
+      {
+        "moduleName": "opencv_jni_shared",
+        "moduleHeaders": "E:\\flutter\\MyApplication2\\OpenCv\\native\\jni\\include",
+        "moduleExportLibraries": [],
+        "abis": []
+      }
+    ]
+  }
+}

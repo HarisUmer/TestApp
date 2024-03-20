@@ -1,0 +1,2 @@
+ninja: Entering directory `E:\flutter\MyApplication2\OpenCv\.cxx\Debug\3g3v2c5l\x86'
+ninja: no work to do.

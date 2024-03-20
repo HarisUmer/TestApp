@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/Text1"
+        android:layout_width="190dp"
+        android:layout_height="71dp"
+        android:hint="Fill"
+        android:textColor="@color/black">
+
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:padding="40dp"
+        android:layout_margin="20dp"
+        android:id="@+id/View1"
+        android:textSize="40pt">
+
+    </TextView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="SetText1"
+        android:text="SetText"
+        android:id="@+id/b2"
+        >
+
+    </Button>
+
+</LinearLayout>

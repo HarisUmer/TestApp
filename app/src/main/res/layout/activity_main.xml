@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello"
+        android:onClick="printHello"
+        android:id="@+id/b1"
+        >
+
+    </Button>
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="70pt"
+        android:layout_height="70pt"
+        android:layout_gravity="center"
+        android:src="@drawable/football"
+        android:contentDescription="Logo"
+        >
+
+    </ImageView>
+</LinearLayout>
