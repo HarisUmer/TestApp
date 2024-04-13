@@ -43,7 +43,7 @@ public class Sender {
             Log.d("Massage tag", "Message Sent");
 
             // Close the connection
-            out.close();
+
             return 1;
 
         } catch (UnknownHostException e) {

@@ -25,10 +25,7 @@
     "variantName": "debug",
     "isDebuggableEnabled": true,
     "validAbiList": [
-      "ARMEABI_V7A",
-      "ARM64_V8A",
-      "X86",
-      "X86_64"
+      "X86"
     ],
     "buildTargetSet": [
       "opencv_jni_shared"
@@ -132,6 +129,7 @@
         "rootBuildGradleFolder": "E:\\flutter\\MyApplication2",
         "sdkFolder": "C:\\Users\\HarisUmer\\AppData\\Local\\Android\\sdk",
         "isBuildOnlyTargetAbiEnabled": true,
+        "ideBuildTargetAbi": "x86,armeabi-v7a,armeabi",
         "isCmakeBuildCohabitationEnabled": false,
         "isPrefabEnabled": false
       },
