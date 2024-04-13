@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,7 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -21,22 +24,29 @@ import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.net.Socket;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class camera extends AppCompatActivity {
-    Button b1,b2;
-    private static final String[] REQUIRED_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
+    Button b1, b2;
+    private static final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     private static final int REQUEST_CODE_PERMISSIONS = 10;
     private PreviewView previewView;
     private ImageCapture imageCapture;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
-    PreviewView Prev ;
-    ImageCapture   IC;
+    private static final Lock lock = new ReentrantLock();
+    PreviewView Prev;
+    ImageCapture IC;
     ProcessCameraProvider p1;
-    Context  cont = this;
+    Context cont = this;
+    Socket socket;
+    final Sender s1 = new Sender();;
     ListenableFuture<ProcessCameraProvider> CameraProviderFuture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +54,10 @@ public class camera extends AppCompatActivity {
 
         // Find the capture button view
         Button captureButton = findViewById(R.id.button);
+
         Prev = findViewById(R.id.preview);
+
+
 
         try {
             CameraProviderFuture = ProcessCameraProvider.getInstance(this);
@@ -66,6 +79,7 @@ public class camera extends AppCompatActivity {
             // Handle exceptions
             e.printStackTrace();
         }
+
 
         // Request camera permissions if necessary
         if (allPermissionsGranted()) {
@@ -104,24 +118,57 @@ public class camera extends AppCompatActivity {
     }
 
 
-
-    private void startCameraX(ProcessCameraProvider p1)
-    {
-        if(p1!=null){
+    private void startCameraX(ProcessCameraProvider p1) {
+        if (p1 != null) {
             p1.unbindAll();
             CameraSelector c1 = new CameraSelector.Builder().requireLensFacing(
                     CameraSelector.LENS_FACING_BACK
             ).build();
             Preview newPrev = new Preview.Builder().build();
             newPrev.setSurfaceProvider(Prev.getSurfaceProvider());
-            IC =  new ImageCapture.Builder()
+            IC = new ImageCapture.Builder()
                     .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build();
-            p1.bindToLifecycle(this,c1,newPrev,IC);
-            
-        }
-        else{
+
+            ImageAnalysis ImangeProcess = new ImageAnalysis.Builder().setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
+            ImangeProcess.setAnalyzer(getMainExecutor(), new ImageAnalysis.Analyzer() {
+                @Override
+                public void analyze(@NonNull ImageProxy image) {
+
+
+                    Log.d("ImageAnalysis", "Image format: " );
+                     new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            lock.lock();
+                            // Call the sendImage method of Sender class
+                            int result = s1.sendImage(image);
+
+                            // Handle the result if needed
+                            if (result == 1) {
+                                Log.d("ImageAnalysis", "Image sent successfully");
+                            } else {
+                                Log.d("ImageAnalysis", "Failed to send image");
+                            }
+
+                            lock.unlock();
+                        }
+                    }).start();
+
+
+                }
+            });
+
+            p1.bindToLifecycle(this, c1, newPrev, IC, ImangeProcess);
+
+        } else {
             Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
 
         }
     }
-}
+
+
+
+
+
+};
+
