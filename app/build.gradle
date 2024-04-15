@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.application'
 }
-
+plugins {
+    id("com.chaquo.python")
+}
 android {
     namespace 'com.example.myapplication'
     compileSdk 34
@@ -12,9 +14,19 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-
+        ndk {
+            // On Apple silicon, you can omit x86_64.
+            abiFilters "arm64-v8a", "x86_64"
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
+        python {
+            version "3.10"
+        }
+        python {
+            buildPython("D:/python/python.exe")
+
+
+        }
 
     buildTypes {
         release {
@@ -30,7 +42,14 @@ android {
     buildFeatures {
         viewBinding true
     }
-    ndkVersion '26.2.11394342'
+        ndkVersion '26.2.11394342'
+        sourceSets{
+            main
+        {
+            python.srcDirs = ["src/main/python"]
+        }
+}
+    }
 }
 
 dependencies {

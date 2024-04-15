@@ -12,10 +12,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
+
 public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (! Python.isStarted()) {
+            Python.start(new AndroidPlatform(MainActivity.this));
+        }
+
         setContentView(R.layout.activity_main);
         ImageView i1 = findViewById(R.id.img);
         Animation ani = AnimationUtils.loadAnimation(this,R.anim.downward);
